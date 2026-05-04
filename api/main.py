@@ -10,6 +10,7 @@ import pandas as pd
 from botocore.exceptions import BotoCoreError, ClientError
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import Counter, Histogram
 from prometheus_fastapi_instrumentator import Instrumentator
@@ -57,6 +58,11 @@ confidence_histogram = Histogram(
 model_routing_counter = Counter("model_routing_total", "Requests routed per model", ["model"])
 
 _alerts: list[AlertEvent] = []
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health", tags=["ops"])
