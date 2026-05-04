@@ -44,7 +44,7 @@ class TestPredict:
         assert scaled_amount == pytest.approx(1.23)
 
     def test_scaled_amount_passed_to_model(self):
-        p = setup_predictor(scaled=0.99)
+        p = setup_predictor(scaled=0.99, no_challenger=True)
         p.predict(SAMPLE_TRANSACTION)
         call_args = p._champion.predict_proba.call_args
         X = call_args[0][0]
